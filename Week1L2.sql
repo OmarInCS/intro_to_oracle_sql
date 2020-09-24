@@ -3,106 +3,136 @@ Name: Omar Karem
 Mobile: 0599 888 921
 ------------------------------------------
 
-SELECT * | [DISTINCT|UNIQUE] columns|expr [AS] [alias]
-FROM table_name
+SELECT
+FROM
 [WHERE bool-expr]
+[ORDER BY column|expr|alias|number [ASC|DESC]]
 
 
 * Retriving, Restricting and Sorting data
 
-Math Operators: *, /, +, -
-Concat Operator: ||
+Math Expr: *, /, +, -
+Concat Excpr: ||
 Bool-expr:
 	>, >=, <, <=, =, <>
-	between ... and ....
+	between ... and ...
 	in (..., ..., ...)
-	like '...'
-	is [not] null
+	like ''
+	is [NOT] null
 
+Logical Operators:
+	bool-expr and bool-expr
+	bool-expr or bool-expr
+
+* Using Single-Row Functions to Customize Output:
+
+	* Characters:
+		lower(), upper(), initcap(), trim(), replace(),
+		substr(), instr(), length(), lpad(), rpad()
+	* Numbers
+	* Dates
+	* Conversion
+	* General
 
 ---------------------- Examples ------------------------
 
 
+select last_name, job_id, salary
+from employees
+where job_id in ('SA_REP', 'ST_CLERK') and salary not in (2500, 3500, 7000)
+
+select last_name, job_id, salary
+from employees
+where salary > &sal
+
+
+select last_name, job_id, salary
+from employees
+where job_id = '&job'
+
+select last_name, job_id, salary &more_columns
+from employees
+
+select last_name, job_id, salary, hire_date
+from employees
+order by salary desc
+
+
+select last_name, job_id, salary * 12 as annual_salary, hire_date
+from employees
+order by salary * 12 desc
+
+
+select last_name, job_id, salary * 12 as annual_salary, hire_date
+from employees
+order by annual_salary desc
+
+
+select last_name, job_id, salary * 12 as annual_salary, hire_date
+from employees
+--where annual_salary > 150000  Error
+where salary * 12 > 150000
+
+select last_name, job_id, salary * 12 as annual_salary, hire_date
+from employees
+order by 3 desc
+
+
+select last_name, job_id, salary * 12 as annual_salary, hire_date
+from employees
+order by &column &sort_type
+
+
+select last_name, job_id, salary , hire_date
+from employees
+order by job_id, last_name
+
+select upper(last_name), initcap(job_id), lower(hire_date)
+from employees
+
+select last_name, job_id, salary
+from employees
+where upper(job_id) = upper('&job')
+
+select trim('    Hello     ')
+from dual
 
 select *
+from dual
+
+
+select replace('    Hello World     ', ' ', '-')
+from dual
+
+select last_name, job_id, salary
+from employees
+where upper(job_id) = trim(upper('&job'))
+
+
+
+select last_name, replace(job_id, 'MAN', 'MGR') as job_id, salary
 from employees
 
-select last_name, salary
+
+select last_name, hire_date
+                , substr(hire_date, 4, 3) as hire_month
+                , 20 || substr(hire_date, -2) as hire_year
 from employees
 
-select distinct job_id
-from employees
-
-select distinct manager_id
+select last_name, instr(last_name, 'e')
 from employees
 
 
-select unique manager_id
+select last_name, instr(last_name, 'e', 4)
 from employees
 
-select last_name, job_id, hire_date, salary
+
+select last_name, instr(last_name, 'e', 1, 3)
 from employees
-where salary > 12000
 
 
-select last_name, job_id, hire_date, salary
+select lpad(last_name, 15, '-'), rpad(last_name, 15, '-')
 from employees
-where job_id = 'SA_MAN'
-
-
-select last_name, job_id, hire_date, salary
-from employees
-where salary between 5000 and 10000
-
-
-select last_name, job_id, hire_date, salary
-from employees
-where hire_date between '01-JAN-08' and '31-DEC-08'
-
-
-select last_name, job_id, hire_date, salary
-from employees
-where job_id in ('ST_CLERK', 'SH_CLERK')
-
-
-select last_name, job_id, hire_date, salary
-from employees
-where last_name like 'O%'
-
-
-select last_name, job_id, hire_date, salary
-from employees
-where hire_date like '%08'
-
-
-select last_name, job_id, hire_date, salary
-from employees
-where hire_date like '%MAY%'
-
-
-select last_name, job_id, hire_date, salary
-from employees
-where job_id like 'S%_CLERK'
-
-
-select last_name, job_id, hire_date, salary
-from employees
-where last_name like '_a%'
-
-
-select last_name, job_id, hire_date, salary
-from employees
-where last_name = 'Wael'
-
-select last_name, job_id, hire_date, salary, commission_pct
-from employees
-where commission_pct is null
-
-
-select last_name, job_id, hire_date, salary, commission_pct
-from employees
-where commission_pct is not null
-
 
 
 
@@ -111,23 +141,6 @@ where commission_pct is not null
 
 
 -------------------- Questions ------------------------
-* The HR department wants a query to display the last name, 
-job ID, hire date, and employee ID for each employee, 
-with the employee ID appearing first. Provide an alias
-STARTDATE for the HIRE_DATE column.
-
-* The HR department wants a query to display all 
-unique job IDs from the EMPLOYEES table.
-
-	
-* Because of budget issues, the HR department needs 
-a report that displays the last name and salary 
-of employees who earn more than $12,000.
-
-
-* display the last name and salary for any employee 
-whose salary is not in the range $5,000 through $12,000.
-
 
 * Display the last name, job, and salary for all employees 
 whose job is that of a sales representative (SA_REP) or 

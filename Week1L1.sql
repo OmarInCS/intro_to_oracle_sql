@@ -3,8 +3,25 @@ Name: Omar Karem
 Mobile: 0599 888 921
 ------------------------------------------
 
+SELECT
+FROM
+WHERE bool-expr
+
 
 * Retriving, Restricting and Sorting data
+
+Math Expr: *, /, +, -
+Concat Excpr: ||
+Bool-expr:
+	>, >=, <, <=, =, <>
+	between ... and ...
+	in (..., ..., ...)
+	like ''
+	is [NOT] null
+
+Logical Operators:
+	bool-expr and bool-expr
+	bool-expr or bool-expr
 
 
 ---------------------- Examples ------------------------
@@ -13,24 +30,90 @@ Mobile: 0599 888 921
 select *
 from employees
 
-select last_name, hire_date, job_id, salary
+select last_name, hire_date, salary, job_id
 from employees
 
 
-select last_name, hire_date, job_id, salary, salary * 12 as annual_salary
-from employees
-
-select first_name || ' bin ' || last_name as full_name, job_id
+select last_name, hire_date, salary, salary * 12 as annual_salary ,job_id
 from employees
 
 
-select last_name, hire_date, job_id, salary, salary * 12 "annual salary"
+select last_name, hire_date, salary, salary * 12 annual_salary ,job_id
 from employees
 
-select last_name, hire_date, salary, commission_pct
-      , salary + commission_pct * salary as total_salary
+
+select last_name, hire_date, salary, salary * 12 as "annual salary" ,job_id
 from employees
 
+select first_name || ' bin ' || last_name as full_name, hire_date
+from employees
+
+select distinct department_id
+from employees
+
+select unique department_id
+from employees
+
+select last_name, hire_date, job_id, salary, department_id
+from employees
+where salary > 12000
+
+
+select last_name, hire_date, job_id, salary, department_id
+from employees
+where hire_date > '01-JAN-08'
+
+
+select last_name, hire_date, job_id, salary, department_id
+from employees
+where hire_date between '01-JAN-08' and '31-DEC-08'
+
+
+select last_name, hire_date, job_id, salary, department_id
+from employees
+where job_id = 'IT_PROG'
+
+
+select last_name, hire_date, job_id, salary, department_id
+from employees
+where job_id in ('IT_PROG', 'SA_REP', 'ST_MAN')
+
+
+select last_name, hire_date, job_id, salary, department_id
+from employees
+where job_id like '%CLERK'
+
+
+select last_name, hire_date, job_id, salary, department_id
+from employees
+where hire_date like '%08'
+
+
+select last_name, hire_date, job_id, salary, department_id
+from employees
+where hire_date like '%MAY%'
+
+select last_name, hire_date, job_id, salary, department_id
+from employees
+where last_name like '_e%'
+
+select last_name, hire_date, job_id, salary, department_id
+from employees
+where last_name like '_____'
+
+select last_name, hire_date, job_id, salary, department_id, commission_pct
+from employees
+where commission_pct is not null
+
+
+select last_name, hire_date, job_id, salary, department_id
+from employees
+where hire_date like '%08' and salary > 5000
+
+
+select last_name, hire_date, job_id, salary, department_id
+from employees
+where hire_date like '%08' or hire_date like '%07'
 
 
 
