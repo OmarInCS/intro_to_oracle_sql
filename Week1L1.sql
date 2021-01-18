@@ -11,51 +11,45 @@ FROM table_name
 
 * Retriving, Restricting and Sorting data
 
-
-Math operators: *, /, +, -
+Math Operators: *, /, +, -
 Concat Operator: ||
 Bool-expr:
-	>, <, >=, <=, =, <>
-	between .... and ....
-	in (..., .., ...)
-	like ''
-	is [not] null
-	
-Logical Operators:
-
-	bool-expr and bool-expr
-	bool-expr or bool-expr
-	not bool-expr
-
+	>, >=, <, <=, =, <>
+	expr between .... and ....
+	expr in (.., ..., ...)
+	expr like '...'
+	expr is [not] null
 
 ---------------------- Examples ------------------------
 
-select *
-from employees
 
 select *
-from departments
+from employees
 
-select last_name, hire_date, job_id, salary, department_id
+select last_name, hire_date, job_id, salary
 from employees
 
 
-select last_name, hire_date, salary, salary * 12 as annual_salary
+select last_name, hire_date, job_id, salary, salary * 12 as annual_salary
 from employees
 
 
-select last_name, hire_date, salary, salary * 12 annual_salary
+select last_name, hire_date, job_id, salary, salary * 12 annual_salary
 from employees
 
 
-select last_name, hire_date, salary, salary * 12 "Annual Salary"
+select last_name, hire_date, job_id, salary, salary * 12 "Annual Salary"
 from employees
 
-select first_name || ' bin '  || last_name as "Full Name"
+select first_name || ' ' || last_name
+from employees
+
+
+select first_name || ' bin ' || last_name
 from employees
 
 select last_name, salary, commission_pct
-                , salary + salary * commission_pct as total_salary
+                        , salary + salary * commission_pct as total_salary
 from employees
 
 select distinct department_id
@@ -65,133 +59,91 @@ from employees
 select unique department_id
 from employees
 
-select last_name, hire_date, salary, department_id, job_id
+select last_name, hire_date, job_id, department_id, salary
 from employees
-where salary > 12000
+where salary >= 10000
 
 
-select last_name, hire_date, salary, department_id, job_id
+select last_name, hire_date, job_id, department_id, salary
 from employees
 where job_id = 'SA_MAN'
 
 
-select last_name, hire_date, salary, department_id, job_id
+select last_name, hire_date, job_id, department_id, salary
 from employees
-where department_id = 80
+where hire_date > '01-JAN-08'
 
 
-select last_name, hire_date, salary, department_id, job_id
+select last_name, hire_date, job_id, department_id, salary
 from employees
-where salary between 5000 and 10000
+where hire_date between '01-JAN-08' and '31-DEC-08'
 
-
-select last_name, hire_date, salary, department_id, job_id
+select last_name, hire_date, job_id, department_id, salary
 from employees
 where department_id in (60, 30, 20)
 
 
-select last_name, hire_date, salary, department_id, job_id
+select last_name, hire_date, job_id, department_id, salary
 from employees
-where hire_date between '01-JAN-08' and '31-DEC-08'
+where job_id in ('PU_CLERK', 'ST_CLERK')
 
 
-select last_name, hire_date, salary, department_id, job_id
+select last_name, hire_date, job_id, department_id, salary
+from employees
+where job_id like '%CLERK'
+
+
+select last_name, hire_date, job_id, department_id, salary
 from employees
 where hire_date like '%08'
 
 
-select last_name, hire_date, salary, department_id, job_id
+select last_name, hire_date, job_id, department_id, salary
 from employees
-where hire_date like '%JAN%'
+where hire_date like '%MAY%'
 
 
-select last_name, hire_date, salary, department_id, job_id
+select last_name, hire_date, job_id, department_id, salary
 from employees
-where last_name like 'A%'
+where last_name like 'K%'
 
 
-select last_name, hire_date, salary, department_id, job_id
+select last_name, hire_date, job_id, department_id, salary
 from employees
-where last_name like '%a%'
+where last_name like '_e%'
 
 
-select last_name, hire_date, salary, department_id, job_id
-from employees
-where last_name like '_a%'
-
-
-select last_name, hire_date, salary, department_id, job_id
+select last_name, hire_date, job_id, department_id, salary
 from employees
 where department_id is null
 
-select last_name, hire_date, salary, department_id, job_id
-from employees
-where hire_date like '%JAN-08'
 
-
-select last_name, hire_date, salary, department_id, job_id
-from employees
-where hire_date like '%08' and salary > 5000
-
-
-
-select last_name, hire_date, salary, department_id, job_id
-from employees
-where department_id = 60
- or department_id = 30
- or department_id = 20
- 
-
-select last_name, hire_date, salary, department_id, job_id
-from employees
-where department_id = &dept
-
-
-select last_name, hire_date, salary, department_id, job_id
-from employees
-where job_id = '&job'
-
-
-select last_name, hire_date, salary, department_id, job_id
+select last_name, hire_date, job_id, department_id, salary
 from employees
 order by last_name
 
 
-select last_name, hire_date, salary, department_id, job_id
+select last_name, hire_date, job_id, department_id, salary
 from employees
 order by salary desc
 
 
-select last_name, hire_date, salary, department_id, job_id
+select last_name, hire_date, job_id, department_id, salary
 from employees
-order by salary desc, hire_date
+order by 5 desc
 
 
-select last_name, hire_date, salary, department_id, job_id
-from employees
-order by 3 desc, 2
-
-
-select last_name, hire_date, salary, salary * 12 as annual_salary
+select last_name, hire_date, salary * 12 as annual_salary
 from employees
 order by salary * 12 desc
 
 
-select last_name, hire_date, salary, salary * 12 as annual_salary
+select last_name, hire_date, salary * 12 as annual_salary
 from employees
 where salary * 12 > 150000
 order by annual_salary desc
 
 
-accept col prompt 'Enter column to sort with:'
-define salary_bound = 150000
-
-select last_name, hire_date, salary, salary * 12 as annual_salary
-from employees
-where salary * 12 > &salary_bound
-order by &&col
-
-undefine col
 
 
 
