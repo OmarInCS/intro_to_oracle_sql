@@ -37,6 +37,148 @@ FROM table_name
 ---------------------- Examples ------------------------
 
 
+select last_name, salary, commission_pct
+                , salary + salary * nvl(commission_pct, 0) as total_salary
+from employees
+
+
+select last_name, salary, commission_pct, nvl2(commission_pct, 0.1, 0)
+                , salary + salary * nvl2(commission_pct, 0.1, 0) as total_salary
+from employees
+
+select last_name, nvl(to_char(manager_id), 'No Mgr.')
+from employees
+
+select last_name, coalesce(to_char(manager_id), 'No Mgr.')
+from employees
+
+--select last_name, salary + coalesce(col_1, col_2, col_3, col_4, 0)
+--from employees
+
+select last_name, salary + nvl(col_1, 0) + nvl(col_2, 0) + nvl(col_3, 0)
+from employees
+
+select last_name, job_id, department_id, salary, case department_id
+                                                    when 90 then salary - 500
+                                                    when 60 then salary + 1000
+                                                    when 100 then salary + 500
+                                                    else salary
+                                                 end new_salary
+from employees
+
+
+select last_name, department_id, salary, case 
+                                            when department_id = 90 then salary - 500
+                                            when department_id = 60 then salary + 1000
+                                            when department_id = 100 then salary + 500
+                                            else salary
+                                         end new_salary
+from employees
+
+select last_name, department_id, salary, case 
+                                            when salary > 12000 then 'High'
+                                            when salary > 6000 then 'Normal'
+                                            else 'Low'
+                                         end salary_level
+from employees
+
+select last_name, job_id, department_id, salary, decode( department_id
+                                                    , 90 , salary - 500
+                                                    , 60 , salary + 1000
+                                                    , 100 , salary + 500
+                                                    , salary
+                                                 ) new_salary
+from employees
+
+select last_name, nvl(to_char(salary * commission_pct), 'No Commission') as comm
+from employees
+
+select last_name, case 
+                    when commission_pct is null then 'No Commission'
+                    else to_char(salary * commission_pct)
+                  end comm
+from employees
+
+
+--------------- Group Functions ------------
+
+select max(salary), min(salary)
+from employees
+
+
+select max(hire_date), min(hire_date)
+from employees
+
+select sum(salary), round(avg(salary))
+from employees
+
+select avg(salary)
+from employees
+where department_id = 60
+
+select count(last_name)
+from employees
+where department_id = 60
+
+
+select count(last_name)
+from employees
+
+
+select count(first_name)
+from employees
+
+
+select count(*)
+from employees
+
+select count(distinct department_id)
+from employees
+
+
+--select last_name, min(salary)
+--from employees
+
+select job_id, min(salary)
+from employees
+group by job_id
+
+select department_id, count(last_name)
+from employees
+where department_id is not null
+group by department_id
+
+-- Logic Error
+--select last_name, min(salary)
+--from employees
+--group by last_name
+
+select to_char(hire_date, 'YYYY'), count(last_name)
+from employees
+group by to_char(hire_date, 'YYYY')
+
+select job_id, count(last_name)
+from employees
+group by job_id
+
+select department_id, count(last_name)
+from employees
+where department_id is not null
+group by department_id
+having count(last_name) > 5
+
+
+select department_id, manager_id, count(last_name)
+from employees
+where department_id is not null
+group by department_id, manager_id
+order by department_id, manager_id
+
+
+select max(count(last_name))
+from employees
+where department_id is not null
+group by department_id
 
 
 
