@@ -126,7 +126,7 @@ Bool-expr:
         | DROP (col_name, ...)
         | RENAME COLUMN col_name TO new_name
 
-        | ADD [CONSTRAINT cons_name] cons_type
+        | ADD [CONSTRAINT cons_name] cons_type()
         | DROP CONSTRAINT cons_name
         | DISABLE CONSTRAINT cons_name
         | ENABLE CONSTRAINT cons_name
