@@ -228,44 +228,62 @@ Bool Expr:
 ---------------------- Examples ------------------------
 
 
-create user omar
-identified by omar
 
-select *
-from session_privs
+create table students
+(
+    student_id number(6) primary key,
+    email varchar(150) unique check(email like '%@%'),
+    mobile varchar(10) unique check(mobile like '05%'),
+    name varchar(50) not null
+)
 
-grant create session, create table, create sequence 
-to omar
+create table trainer
+(
+    trainer_id number(6) primary key,
+    email varchar(150) unique check(email like '%@%'),
+    mobile varchar(10) unique check(mobile like '05%'),
+    name varchar(50) not null,
+    salary number(8, 2) check(salary > 3000)
+)
 
-grant unlimited tablespace
-to omar
+create table courses
+(
+    course_id number(6) primary key,
+    title varchar(150) unique not null,
+    start_date date default (sysdate + 7),
+    duration number(3) check (duration between 12 and 120),
+    price number(6, 2) check(price > 0),
+    trainer_id number(6)
+)
 
-revoke create session, create table, create sequence 
-from omar
 
+create table registerations
+(
+    course_id number(6),
+    reg_date date default (sysdate),
+    discount number(2, 2) check(discount between 0 and 0.5),
+    student_id number(6),
+    primary key (course_id, student_id)
+)
 
-create role analysis_team
+alter table registerations
+add foreign key (student_id)
+    references students(student_id)
 
-grant create session, create table, create sequence 
-to analysis_team
+alter table registerations
+add foreign key (course_id)
+    references courses(course_id)
 
-grant analysis_team
-to omar
+alter table courses
+add foreign key (trainer_id)
+    references trainers(trainer_id)
 
-revoke create table
-from analysis_team
+alter table trainer
+rename to trainers
 
-select *
-from hr.employees
-
-grant select, update(first_name, commission_pct)
-on hr.employees
-to analysis_team
-
-revoke select, update
-on hr.employees
-from analysis_team
-
+alter table courses
+add foreign key (trainer_id)
+    references trainers(trainer_id)
 
 
 
