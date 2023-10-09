@@ -46,24 +46,6 @@ List the patient IDs, first names, and last names of patients, skipping the firs
 **Question 1:**
 You work in a healthcare database where patient addresses are stored in the `Patients` table. Write a query that prompts the user for a specific address substring using a substitution variable and returns the patient IDs and full addresses of patients whose addresses contain the specified substring. Additionally, capitalize the the address.
 
-<details>
-<summary>Solution</summary>
-
-* first name in first row: Bev
-* first name in last row: Chrisse
-
-```sql
-select PATIENT_ID, FIRST_NAME, LAST_NAME
-from patients
-order by FIRST_NAME
-offset 5 rows
-fetch next 10 rows only
-```
-
-</details>
-<br/>
-
-
 **Question 2:**
 In your healthcare database, you have a table named `Treatments` that includes an "FDA_CODE" column representing the FDA code associated with each treatment. Write a query that prompts the user for a specific FDA code using a substitution variable and returns the treatment IDs, descriptions, and treatment costs for treatments with the specified FDA code. Additionally, include a column that calculates the round value of the treatment cost with tax 15%.
 
