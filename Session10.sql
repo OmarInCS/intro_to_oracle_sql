@@ -73,11 +73,70 @@ Logical Expr:
     - Correlated Subquery
 
 
+* Managing Tables Using DML Statements: (commit, rollback)
+
+    - insert:
+        INSERT INTO table_name [(col1, col2, ....)]
+        VALUES (value1, value2, ....)
+
+    - update:
+        UPDATE table_name
+        SET column1 = value1, ..., ....
+        [WHERE bool-expr]
+
+    - delete:
+        DELETE [FROM] table_name
+        [WHERE bool-expr]
+
+
 
 ---------------------- Examples ------------------------
 
-Group 1: 18 + 5 + 3 + 10 + 10 + 8
-Group Moshi Mosh: 18 + 13 + 15 + 8 + 8 + 13
+Group 1: 18 + 5 + 3 + 10 + 10 + 8 + 3
+Group Moshi Mosh: 18 + 13 + 15 + 8 + 8 + 13 + 15
+
+
+
+desc departments
+
+insert into departments
+values (280, 'Training', null, null)
+
+insert into  departments (DEPARTMENT_ID, DEPARTMENT_NAME)
+values (290, 'Development')
+
+desc employees
+
+insert into employees (EMPLOYEE_ID, EMAIL, HIRE_DATE, SALARY, JOB_ID, LAST_NAME)
+values ((select max(employee_id) + 1 from employees),
+        'ab@gmail.com', sysdate, 10000, 'IT_PROG', 'Abbas')
+
+update employees
+set first_name = 'Fernas'
+where employee_id = 207
+
+
+update employees
+set salary = 20000
+
+rollback
+
+update employees
+set salary = (select max(salary)
+                from employees)
+where employee_id = 207
+
+commit
+
+delete from employees
+where employee_id in (207, 208)
+
+delete from departments
+where department_id = 290
+
+commit
+
+show autocommit
 
 
 
